@@ -1,0 +1,75 @@
+Qué es Redux?
+Es un contenedor del estado de aplicaciones.
+
+Permite registrar el estado de la aplicación.
+Supongo que también permite acceder al estado de laaplicación.
+El estado de la aplicación puede estar determinado por distintos valores.
+Guarda cada uno de los estados que la aplicación va teniendo en el tiempo.
+El estado de la aplicación solo puede ser modificado mediante acciones.
+Como yo lo entiendo la idea es poder registrar el estado de la aplicación
+en cada momento para facilitar la depuración y las pruebas.
+
+Ejemplo de Uno de Piera. Contador.
+- ARCHIVO: counter.action.ts
+	* Crear clase         -> CounterActions
+	* Declarar constantes -> INCREMENT_COUNTER, DECREMENT_COUNTER
+	* crear metodos       -> increment(), decrement()
+
+- ARCHIVO: counter.reducer.ts
+	* Crear constante -> INITIAL_STATE
+	* Crear función   -> counterReducer. 
+		Esta función recibe el estado que es el estado inicial
+		y recibe la acción. 
+		Modifica el estado acorde a la acción que recibe.
+		Retorna el estado.
+
+** Qué significa el simbolo de interrogación en esta sintaxis. 
+	counter?: number;
+	*** Significa que es una propiedad opcional puede tenerla o no.
+
+- ARCHIVO: index.ts dentro de la carpeta reducers.
+	* Exportar interface IAppState
+	* Exportar constante rootReducer mediante combineReducers
+
+- ARCHIVO: counter.component.html (El usa template en lugar de templateURL)
+	* {{ counter$ | async}} -> El dolar significa que es un observable
+	* Boton incrementar     -> Llama al método increment que está en el archivo counter.action
+	* Boton decrementar     -> Llama al método decrement
+
+- ARCHIVO: counter.component.ts 
+	* Exportar clase CounterComponent -> como en cualquier componente
+	* @select('counter') counter$: Observable<number> -> Indicamos que reducer usar 'counter'
+							  -> Crea el observable counter$
+	* El constructor recibe como parametro la acción que es del tipo CounterActions
+
+- ARCHIVO: home.component.ts
+	* En el template llamamos al componente counter -> <conter></counter>
+	* En el constructor pasamos
+		->	private ngRedux: NgRedux<IappState>,
+			private devTools: DevToolsExtension
+	Configuramos el store
+		-> this.ngRedux.configureStore {
+			rootReducer, {}, [],
+			[devTools.isEnabled() ? devTools.enhacer : f => f]
+			}
+
+- ARCHIVO: app.module.ts
+	* Importar NgReduxModule, CounterComponent, CounterActions
+	* NgReduxModule va en imports
+	* CounterComponent como todos los modulos en declarations
+	* CounterActions va en providers -> Es una directiva sin template
+
+*- Qué es un store?
+	- Es un pbjeto donde se almacenan todos los estados
+*- Qué es un reducer?
+	- Es la función encargada de modificar un estado
+*- Qué es un action?
+	- Son los tipos de modificaciones que pueden hacerse sobre un estado
+*- Qué es el root-reducer?
+	- Se encarga de la lógica que indica que reducer afecta a cada estado
+
+**- Cuál es el esquema de ejecución para la actualización del estado?
+
+	*** ACTIONS -> REDUCERS -> STORE --subsxribe-> VIEW --dispatch-> ACTIONS
+ 
+**- Cómo puedo acceder al valor del estado?
