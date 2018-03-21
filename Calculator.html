@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Calculator</title>
     <script>
+        function square() {
+            var num = document.getElementById("n1");
+            num.value = num.value * num.value;
+        }
         function inverse() {
             var num = document.getElementById("n1");
             num.value = 1 / num.value;
@@ -17,5 +21,6 @@
     Number:
     <input type="text" id="n1">
     <button onclick="square()">x <sup>2</sup></button>
+    <button onclick="inverse()">1/X</button>
 </body>
 </html>
